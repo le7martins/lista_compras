@@ -1,0 +1,29 @@
+{
+  "askcliResourcesVersion": "2020-03-31",
+  "profiles": {
+    "default": {
+      "skillMetadata": {
+        "src": "./skill-package"
+      },
+      "code": {
+        "default": {
+          "src": "./lambda"
+        }
+      },
+      "skillInfrastructure": {
+        "type": "@ask-cli/lambda-deployer",
+        "userConfig": {
+          "runtime": "nodejs20.x",
+          "handler": "index.handler",
+          "functionName": "lista-compras-alexa",
+          "memorySize": 128,
+          "timeout": 8,
+          "environmentVariables": {
+            "BACKEND_API_URL": "https://SUBSTITUA_PELA_URL_DA_API",
+            "LIST_ID": "00211007-5a2b-4aa2-a54e-523681a17462"
+          }
+        }
+      }
+    }
+  }
+}
