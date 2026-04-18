@@ -1,0 +1,88 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Lista de Compras - Backend API + Alexa Skill
+
+Globals:
+  Function:
+    Runtime: nodejs20.x
+    Timeout: 10
+    Environment:
+      Variables:
+        NODE_ENV: production
+
+Parameters:
+  DatabaseUrl:
+    Type: String
+    NoEcho: true
+    Description: PostgreSQL connection string
+  AlexaSkillId:
+    Type: String
+    Description: Alexa Skill ID (amzn1.ask.skill.xxx)
+  ListId:
+    Type: String
+    Description: Default shopping list UUID
+
+Resources:
+
+  # ─── Backend API ───────────────────────────────────────────────────────────
+
+  BackendFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lista-compras-backend
+      Handler: lambda.handler
+      CodeUri: ../backend
+      MemorySize: 256
+      Environment:
+        Variables:
+          DATABASE_URL: !Ref DatabaseUrl
+      Events:
+        HttpApi:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref HttpApi
+            Path: /{proxy+}
+            Method: ANY
+
+  HttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      Name: lista-compras-api
+      CorsConfiguration:
+        AllowOrigins:
+          - '*'
+        AllowMethods:
+          - GET
+          - POST
+          - PATCH
+          - DELETE
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+
+  # ─── Alexa Skill Lambda ────────────────────────────────────────────────────
+
+  AlexaSkillFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: lista-compras-alexa
+      Handler: lambda/index.handler
+      CodeUri: ../alexa-skill
+      MemorySize: 128
+      Environment:
+        Variables:
+          BACKEND_API_URL: !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com'
+          LIST_ID: !Ref ListId
+      Events:
+        AlexaSkillTrigger:
+          Type: AlexaSkill
+          Properties:
+            SkillId: !Ref AlexaSkillId
+
+Outputs:
+  BackendApiUrl:
+    Description: URL da API REST
+    Value: !Sub 'https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com'
+  AlexaFunctionArn:
+    Description: ARN da Lambda da Alexa Skill (use no Developer Console)
+    Value: !GetAtt AlexaSkillFunction.Arn

@@ -1,0 +1,107 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "lista de compras",
+      "intents": [
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AddItemIntent",
+          "slots": [
+            { "name": "Item",     "type": "AMAZON.SearchQuery" },
+            { "name": "Quantity", "type": "AMAZON.NUMBER" },
+            { "name": "Unit",     "type": "UnitType" }
+          ],
+          "samples": [
+            "adiciona {Item}",
+            "adiciona {Item} à lista",
+            "adiciona {Item} à lista de compras",
+            "coloca {Item} na lista",
+            "coloca {Item} na lista de compras",
+            "preciso de {Item}",
+            "inclui {Item}",
+            "põe {Item} na lista",
+            "adiciona {Quantity} {Item}",
+            "adiciona {Quantity} {Unit} de {Item}",
+            "coloca {Quantity} {Unit} de {Item} na lista"
+          ]
+        },
+        {
+          "name": "RemoveItemIntent",
+          "slots": [
+            { "name": "Item", "type": "AMAZON.SearchQuery" }
+          ],
+          "samples": [
+            "remove {Item}",
+            "remove {Item} da lista",
+            "tira {Item} da lista",
+            "apaga {Item} da lista",
+            "retira {Item}",
+            "não preciso mais de {Item}"
+          ]
+        },
+        {
+          "name": "ListItemsIntent",
+          "slots": [],
+          "samples": [
+            "o que tem na lista",
+            "o que está na lista",
+            "lê a lista",
+            "leia a lista",
+            "quais itens estão na lista",
+            "quais são os itens",
+            "mostra a lista",
+            "o que preciso comprar"
+          ]
+        },
+        {
+          "name": "CheckItemIntent",
+          "slots": [
+            { "name": "Item", "type": "AMAZON.SearchQuery" }
+          ],
+          "samples": [
+            "marca {Item} como comprado",
+            "marcar {Item}",
+            "já comprei {Item}",
+            "risca {Item}",
+            "risca {Item} da lista",
+            "confirma {Item}"
+          ]
+        }
+      ],
+      "types": [
+        {
+          "name": "UnitType",
+          "values": [
+            { "name": { "value": "litro" } },
+            { "name": { "value": "litros" } },
+            { "name": { "value": "kg" } },
+            { "name": { "value": "quilograma" } },
+            { "name": { "value": "quilogramas" } },
+            { "name": { "value": "grama" } },
+            { "name": { "value": "gramas" } },
+            { "name": { "value": "pacote" } },
+            { "name": { "value": "pacotes" } },
+            { "name": { "value": "caixa" } },
+            { "name": { "value": "caixas" } },
+            { "name": { "value": "unidade" } },
+            { "name": { "value": "unidades" } },
+            { "name": { "value": "dúzia" } },
+            { "name": { "value": "lata" } },
+            { "name": { "value": "latas" } }
+          ]
+        }
+      ]
+    }
+  }
+}
